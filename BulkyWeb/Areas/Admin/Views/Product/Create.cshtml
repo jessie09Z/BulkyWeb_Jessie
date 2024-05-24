@@ -1,4 +1,4 @@
-﻿@model Product
+﻿@model ProductVM
 <div class="card shadow border-0 my-4" style="height: calc(100vh - 100px); overflow-y: auto;">
     <div class="card-header bg-secondary bg-gradient ml-0 py-3  ">
         <div class="col-12 text-center"></div>
@@ -15,47 +15,64 @@
                 </div>
 
                 <div class="form-floating py-2 col-12">
-                    <label class="ms-2" asp-for="Title"></label>
-                    <input type="text" class="form-control border-0  shadow" asp-for="Title" />
-                    <span asp-validation-for="Title" class="text-bg-danger"></span>
+                    <label class="ms-2" asp-for="Product.Title"></label>
+                    <input type="text" class="form-control border-0  shadow" asp-for="Product.Title" />
+                    <span asp-validation-for="Product.Title" class="text-bg-danger"></span>
                 </div>
 
                 <div class="form-floating py-2 col-12">
-                    <label class="ms-2" asp-for="Description"></label>
-                    <textarea type="text" class="form-control border-0  shadow" asp-for="Description"></textarea>
-                    <span asp-validation-for="Description" class="text-bg-danger"></span>
+                    <label class="ms-2" asp-for="Product.Description"></label>
+                    <textarea type="text" class="form-control border-0  shadow" asp-for="Product.Description"></textarea>
+                    <span asp-validation-for="Product.Description" class="text-bg-danger"></span>
                 </div>
                 <div class="form-floating py-2 col-12">
-                    <label class="ms-2" asp-for="ISBN"></label>
-                    <input type="text" class="form-control border-0  shadow" asp-for="ISBN" />
-                    <span asp-validation-for="ISBN" class="text-bg-danger"></span>
+                    <label class="ms-2" asp-for="Product.ISBN"></label>
+                    <input type="text" class="form-control border-0  shadow" asp-for="Product.ISBN" />
+                    <span asp-validation-for="Product.ISBN" class="text-bg-danger"></span>
                 </div>
                 <div class="form-floating py-2 col-12">
-                    <label class="ms-2" asp-for="Author"></label>
-                    <input type="text" class="form-control border-0  shadow" asp-for="Author" />
-                    <span asp-validation-for="Author" class="text-bg-danger"></span>
+                    <label class="ms-2" asp-for="Product.Author"></label>
+                    <input type="text" class="form-control border-0  shadow" asp-for="Product.Author" />
+                    <span asp-validation-for="Product.Author" class="text-bg-danger"></span>
                 </div>
                 <div class="form-floating py-2 col-12">
-                    <label class="ms-2" asp-for="ListPrice"></label>
-                    <input type="text" class="form-control border-0  shadow" asp-for="ListPrice" />
-                    <span asp-validation-for="ListPrice" class="text-bg-danger"></span>
+                    <label class="ms-2" asp-for="Product.ListPrice"></label>
+                    <input type="text" class="form-control border-0  shadow" asp-for="Product.ListPrice" />
+                    <span asp-validation-for="Product.ListPrice" class="text-bg-danger"></span>
                 </div>
                 <div class="form-floating py-2 col-12">
-                    <label class="ms-2" asp-for="Price"></label>
-                    <input type="text" class="form-control border-0  shadow" asp-for="Price" />
-                    <span asp-validation-for="Price" class="text-bg-danger"></span>
+                    <label class="ms-2" asp-for="Product.Price"></label>
+                    <input type="text" class="form-control border-0  shadow" asp-for="Product.Price" />
+                    <span asp-validation-for="Product.Price" class="text-bg-danger"></span>
                 </div>
                 <div class="form-floating py-2 col-12">
-                    <label class="ms-2" asp-for="Price50"></label>
-                    <input type="text" class="form-control border-0 ms-2 shadow" asp-for="Price50" />
-                    <span asp-validation-for="Price50" class="text-bg-danger"></span>
+                    <label class="ms-2" asp-for="Product.Price50"></label>
+                    <input type="text" class="form-control border-0 ms-2 shadow" asp-for="Product.Price50" />
+                    <span asp-validation-for="Product.Price50" class="text-bg-danger"></span>
                 </div>
                 <div class="form-floating py-2 col-12">
-                    <label class="ms-2" asp-for="Price100">
+                    <label class="ms-2" asp-for="Product.Price100">
                     </label>
-                    <input type="text" class="form-control border-0  shadow" asp-for="Price100" />
-                    <span asp-validation-for="Price100" class="text-bg-danger"></span>
+                    <input type="text" class="form-control border-0  shadow" asp-for="Product.Price100" />
+                    <span asp-validation-for="Product.Price100" class="text-bg-danger"></span>
                 </div>
+
+                <div class="form-floating py-2 col-12">
+                    <label class="ms-2" asp-for="Product.ImgURL">
+                    </label>
+                    <input type="text" class="form-control border-0  shadow" asp-for="Product.ImgURL" />
+                    <span asp-validation-for="Product.ImgURL" class="text-bg-danger"></span>
+                </div>
+
+                <div class="form-floating py-2 col-12">
+                    <label class="ms-2" asp-for="Product.CategoryId">
+                    </label>
+                    <select class="form-control border-0  shadow" asp-for="Product.CategoryId" asp-items="@Model.CategoryList">
+                    <option disabled selected>--Select Category--</option>    
+                    </select>
+                    <span asp-validation-for="Product.CategoryId" class="text-bg-danger"></span>
+                </div>
+
                 <div class="row p-1">
                     <div class="col-6 col-md-3">
                         <button type="submit" class="btn btn-primary mt-2 form-control">Create</button>
