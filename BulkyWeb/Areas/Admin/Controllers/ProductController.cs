@@ -28,6 +28,8 @@ namespace BulkyWeb.Areas.Admin.Controllers
             return View(objProductList);
         }
 
+      
+
         public IActionResult UpSert(int? id)
         {
 
