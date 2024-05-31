@@ -1,0 +1,35 @@
+﻿@model List<Company>
+
+<div class="container mb-5">
+    <div class="row pt-4">
+        <div class="col-6">
+            <h2 class="text-primary">
+                Company List
+            </h2>
+        </div>
+        <div class="col-6 text-end">
+            <a asp-controller="Company" asp-action="UpSert" class="btn btn-primary mb-lg-2" style="vertical-align: middle;">
+                <i class="bi bi-plus-circle"></i>  Create Company
+            </a>
+        </div>
+    </div>
+    <div class="table-responsive" style="max-height: calc(100vh - 150px); overflow-y: auto;">
+        <table id="tblData" class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Address</th>
+                    <th>City</th>
+                    <th>State</th>
+                    <th>Phone Number</th>
+                    <th></th>
+                </tr>
+
+            </thead>
+        </table>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/company.js"></script>
+}
