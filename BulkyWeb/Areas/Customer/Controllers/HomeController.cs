@@ -1,7 +1,11 @@
 using Bulky.DataAccess.Repository.IRepository;
 using Bulky.Models;
+using Bulky.Utility;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Http;
 
 namespace BulkyWeb.Areas.Customer.Controllers
 {
@@ -24,10 +28,52 @@ namespace BulkyWeb.Areas.Customer.Controllers
         }
         public IActionResult Details(int id)
         {
-            Product objProduct = _unitOfWork.Product.Get(u => u.Id == id, includeProperties: "category");
+            ShoppingCart shoppingCart = new()
+            {
+                Product = _unitOfWork.Product.Get(u => u.Id == id, includeProperties: "category"),
+                Count = 0,
+                ProductId = id
+            };
+            
 
-            return View(objProduct);
+            return View(shoppingCart);
         }
+        [HttpPost]
+        [Authorize]
+        public IActionResult Details(ShoppingCart shoppingCart)
+        {
+            shoppingCart.Id = 0;
+            var claimsIdentity = (ClaimsIdentity)User.Identity;
+            var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
+
+            shoppingCart.ApplicationUserId = userId;
+
+            ShoppingCart cartFromDb = _unitOfWork.ShoppingCart.Get(u => u.ApplicationUserId == userId &&
+            u.ProductId == shoppingCart.ProductId);
+
+            if (cartFromDb != null)
+            {
+                //shopping cart exists
+                cartFromDb.Count += shoppingCart.Count;
+                _unitOfWork.ShoppingCart.Update(cartFromDb);
+                
+            }
+            else
+            {
+                //add cart record
+                _unitOfWork.ShoppingCart.Add(shoppingCart);
+            
+                
+            }
+            _unitOfWork.Save();
+            TempData["success"] = "Cart updated successfully";
+
+
+
+
+            return RedirectToAction(nameof(Index));
+        }
+       
         public IActionResult Privacy()
         {
             return View();

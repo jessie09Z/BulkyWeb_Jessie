@@ -4,6 +4,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.Mvc;
 using Bulky.DataAccess.Data;
 using Bulky.DataAccess.Repository.IRepository;
 using Microsoft.EntityFrameworkCore;
@@ -25,10 +26,19 @@ namespace Bulky.DataAccess.Repository
             dbSet.Add(entity);
         }
 
-        public T Get(Expression<Func<T, bool>> filter, string? includeProperties = null)
+        public T Get(Expression<Func<T, bool>> filter, string? includeProperties = null,bool tracked =false)
         {
-            IQueryable<T> query = dbSet;
-            query=query.Where(filter);
+            IQueryable<T> query;
+            if (tracked == true)
+            {
+               query = dbSet;
+               
+            }
+            else {
+                 query = dbSet.AsNoTracking();
+               
+                }
+            query = query.Where(filter);
             if (!string.IsNullOrEmpty(includeProperties))
             {
                 foreach (var includePro in includeProperties.Split(new char[] { ',' },
@@ -37,13 +47,17 @@ namespace Bulky.DataAccess.Repository
 
                     query = query.Include(includePro);
                 }
+                
             }
             return query.FirstOrDefault();
         }
 
-        public IEnumerable<T> GetAll(string? includeProperties=null)
-        {
-            IQueryable<T> query = dbSet;
+        public IEnumerable<T> GetAll(Expression<Func<T, bool>>? filter, string? includeProperties = null)
+      
+            {
+                IQueryable<T> query = dbSet;
+            if (filter != null) { query = query.Where(filter); }
+            
             if (!string.IsNullOrEmpty(includeProperties)) {
                 foreach (var includePro in includeProperties.Split(new char[] { ','},
                     StringSplitOptions.RemoveEmptyEntries))
