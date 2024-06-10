@@ -1,4 +1,4 @@
-E-commerce Website Development (Personal Project)
+# E-commerce Website Development (Personal Project)
 
 Overview:
 Designed and developed a comprehensive e-commerce website using ASP.NET Core (version 8). This project involved the complete implementation of various functionalities typical of modern online shopping platforms.
