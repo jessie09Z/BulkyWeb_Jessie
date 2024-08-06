@@ -1,0 +1,31 @@
+﻿
+
+<div class="container mb-5">
+    <div class="row pt-4">
+        <div class="col-6">
+            <h2 class="text-primary">
+                Order List
+            </h2>
+        </div>
+        
+    </div>
+    <div class="table-responsive" style="max-height: calc(100vh - 150px); overflow-y: auto;">
+        <table id="tblData" class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Phone Number</th>
+                    <th>Email</th>
+                    <th>Status</th>
+                    <th>Total</th>
+                    <th></th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/order.js"></script>
+}
