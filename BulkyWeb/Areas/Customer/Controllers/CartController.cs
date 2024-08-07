@@ -54,42 +54,39 @@ namespace BulkyWeb.Areas.Customer.Controllers
             return View(ShoppingCartVM);
         }
 
-        public IActionResult Plus(int cartId) {
-            var cartFromDB = _unitOfWork.ShoppingCart.Get(u=>u.Id == cartId);
-            cartFromDB.Count++;
-            _unitOfWork.ShoppingCart.Update(cartFromDB);
-            _unitOfWork.Save();
-            return RedirectToAction("Index");
-        
-        }
-        public IActionResult Remove(int cartId)
-        {
-            var cartFromDB = _unitOfWork.ShoppingCart.Get(u => u.Id == cartId);
-            _unitOfWork.ShoppingCart.Remove(cartFromDB);
-            _unitOfWork.Save();
-            return RedirectToAction("Index");
-
-        }
         public IActionResult Minus(int cartId)
         {
-            var cartFromDB = _unitOfWork.ShoppingCart.Get(u => u.Id == cartId);
-            if (cartFromDB.Count <= 1)
+            var cartFromDb = _unitOfWork.ShoppingCart.Get(u => u.Id == cartId);
+            if (cartFromDb.Count <= 1)
             {
-                _unitOfWork.ShoppingCart.Remove(cartFromDB);
+                //remove that from cart
 
-               
+                _unitOfWork.ShoppingCart.Remove(cartFromDb);
+                HttpContext.Session.SetInt32(SD.SessionCart, _unitOfWork.ShoppingCart
+                    .GetAll(u => u.ApplicationUserId == cartFromDb.ApplicationUserId).Count() - 1);
             }
-            else {
-                cartFromDB.Count--;
-                _unitOfWork.ShoppingCart.Update(cartFromDB);
+            else
+            {
+                cartFromDb.Count -= 1;
+                _unitOfWork.ShoppingCart.Update(cartFromDb);
             }
-           
-            _unitOfWork.ShoppingCart.Update(cartFromDB);
+
             _unitOfWork.Save();
-            return RedirectToAction("Index");
-
+            return RedirectToAction(nameof(Index));
         }
-		public IActionResult Summary()
+
+        public IActionResult Remove(int cartId)
+        {
+            var cartFromDb = _unitOfWork.ShoppingCart.Get(u => u.Id == cartId);
+
+            _unitOfWork.ShoppingCart.Remove(cartFromDb);
+
+            HttpContext.Session.SetInt32(SD.SessionCart, _unitOfWork.ShoppingCart
+              .GetAll(u => u.ApplicationUserId == cartFromDb.ApplicationUserId).Count() - 1);
+            _unitOfWork.Save();
+            return RedirectToAction(nameof(Index));
+        }
+        public IActionResult Summary()
 		{
 			var claimsIdentity = (ClaimsIdentity)User.Identity;
 			var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;

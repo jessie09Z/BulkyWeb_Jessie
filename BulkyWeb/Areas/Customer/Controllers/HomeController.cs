@@ -23,6 +23,14 @@ namespace BulkyWeb.Areas.Customer.Controllers
 
         public IActionResult Index()
         {
+            var claimsIdentity = (ClaimsIdentity)User.Identity;
+            var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
+            if (claim != null) {
+                HttpContext.Session.SetInt32(SD.SessionCart,
+                   _unitOfWork.ShoppingCart.GetAll(u => u.ApplicationUserId == claim.Value).Count());
+
+            }
+
             IEnumerable<Product> productList = _unitOfWork.Product.GetAll(includeProperties:"category");
             return View(productList);
         }
@@ -31,7 +39,7 @@ namespace BulkyWeb.Areas.Customer.Controllers
             ShoppingCart shoppingCart = new()
             {
                 Product = _unitOfWork.Product.Get(u => u.Id == id, includeProperties: "category"),
-                Count = 0,
+                Count = 1,
                 ProductId = id
             };
             
@@ -42,7 +50,7 @@ namespace BulkyWeb.Areas.Customer.Controllers
         [Authorize]
         public IActionResult Details(ShoppingCart shoppingCart)
         {
-            shoppingCart.Id = 0;
+           
             var claimsIdentity = (ClaimsIdentity)User.Identity;
             var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
 
@@ -56,16 +64,19 @@ namespace BulkyWeb.Areas.Customer.Controllers
                 //shopping cart exists
                 cartFromDb.Count += shoppingCart.Count;
                 _unitOfWork.ShoppingCart.Update(cartFromDb);
-                
+                _unitOfWork.Save();
             }
             else
             {
                 //add cart record
                 _unitOfWork.ShoppingCart.Add(shoppingCart);
+                _unitOfWork.Save();
+                HttpContext.Session.SetInt32(SD.SessionCart,
+                    _unitOfWork.ShoppingCart.GetAll(u => u.ApplicationUserId == userId).Count());
             
                 
             }
-            _unitOfWork.Save();
+            
             TempData["success"] = "Cart updated successfully";
 
 
