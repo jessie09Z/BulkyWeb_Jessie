@@ -76,9 +76,12 @@ namespace BulkyWeb.Areas.Customer.Controllers
             if (cartFromDB.Count <= 1)
             {
                 _unitOfWork.ShoppingCart.Remove(cartFromDB);
+
+               
             }
             else {
                 cartFromDB.Count--;
+                _unitOfWork.ShoppingCart.Update(cartFromDB);
             }
            
             _unitOfWork.ShoppingCart.Update(cartFromDB);
