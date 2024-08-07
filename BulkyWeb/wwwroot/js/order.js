@@ -56,7 +56,7 @@ function loadDataTable(status) {
                     </div>`
 
                 }
-            , "width": "25%" },
+            , "width": "10%" },
         ]
     });
 }
