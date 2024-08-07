@@ -1,12 +1,34 @@
 ﻿var dataTable;
 $(document).ready(function () {
-    loadDataTable();
+    var url = window.location.search;
+    console.log("Current URL search:", url); // 输出当前URL的查询部分
+
+    if (url.includes("inprocess")) {
+        console.log("Loading inprocess data");
+        loadDataTable("inprocess");
+    }
+    else if (url.includes("pending")) {
+        console.log("Loading pending data");
+        loadDataTable("pending");
+    }
+    else if (url.includes("approved")) {
+        console.log("Loading approved data");
+        loadDataTable("approved");
+    }
+    else if (url.includes("completed")) {
+        console.log("Loading completed data");
+        loadDataTable("completed");
+    }
+    else {
+        console.log("Loading all data");
+        loadDataTable("all");
+    }
 });
 
-function loadDataTable() {
+function loadDataTable(status) {
    dataTable= $('#tblData').DataTable({
-        "ajax": {
-            "url": "/admin/order/getall",
+       "ajax": {
+           "url": "/admin/order/getall?status=" + status,
             "type": "GET",
             "datatype": "json",
             "dataSrc": function (json) {
