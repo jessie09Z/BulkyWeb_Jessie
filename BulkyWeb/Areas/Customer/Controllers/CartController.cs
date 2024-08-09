@@ -87,7 +87,7 @@ namespace BulkyWeb.Areas.Customer.Controllers
                 _unitOfWork.ShoppingCart.Update(cartFromDB);
             }
            
-            _unitOfWork.ShoppingCart.Update(cartFromDB);
+        
             _unitOfWork.Save();
             return RedirectToAction("Index");
 
